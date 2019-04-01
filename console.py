@@ -42,7 +42,24 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
+            if my_list[0] not in self.all_classes:
+                raise NameError
+
             obj = eval("{}()".format(my_list[0]))
+            if len(my_list) > 1:
+                new_attr = {}
+                for arg in range(1, len(my_list)):
+                    k_v = my_list[arg].split("=")
+                    new_attr[k_v[0]]=k_v[1]
+                for k, v in new_attr.items():
+                    if v[0] is "\"":
+                        v = v[1:-1]
+                    elif "." in v:
+                        v = float(v)
+                    else:
+                        v = int(v)
+                    setattr(obj, k, v)
+
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
