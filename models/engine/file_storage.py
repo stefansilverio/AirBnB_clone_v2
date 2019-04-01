@@ -17,15 +17,38 @@ class FileStorage:
         __file_path: path to the JSON file
         __objects: objects will be stored
     """
+    all_classes = {"BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"}
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """returns a dictionary
         Return:
             returns a dictionary of __object
         """
-        return self.__objects
+        if cls is None:
+            return self.__objects
+        else:
+            filtered_dict = {}
+            cls_str = str(cls)
+            cls_list = cls_str.split(".")
+            cls_name = cls_list[len(cls_list)-1]
+            cls_name = cls_name[:-2]
+            if cls_name in self.all_classes:
+                for k in self.__objects.keys():
+                    sp = k.split(".")
+                    if sp[0] == cls_name:
+                        filtered_dict[k] = self.__objects[k]
+            return filtered_dict
+
+    def delete(self, obj=None):
+        if obj is None:
+            return
+        else:
+            obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if obj_key in self.__objects.keys():
+                del self.__objects[obj_key]
 
     def new(self, obj):
         """sets __object to given obj
