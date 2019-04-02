@@ -14,7 +14,7 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-    id = Column(string(60), unique=True,
+    id = Column(String(60), unique=True,
                 primary_key=True, nullable=False)
     created_at = Column(nullable=False, default=datetime.utcnow())
     updated_at = Column(nullable=False, default=datetime.utcnow())
@@ -68,7 +68,8 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        del my_dict["_sa_instance_state"]
+        if '_sa_instance_state' in  my_dict.keys():
+            del my_dict['_sa_instance_state']
         return my_dict
 
     def delete(self):
