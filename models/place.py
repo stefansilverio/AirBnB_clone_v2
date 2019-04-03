@@ -4,6 +4,7 @@ from models.base_model import Base, BaseModel
 import models
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class Place(BaseModel, Base):
@@ -40,32 +41,35 @@ class Place(BaseModel, Base):
                           Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False),
     )
 
-    amenities = relationship("Place", secondary=place_amenity, viewonly=False)
     reviews = relationship("Review", backref='place', cascade="all, delete, delete-orphan")
 
-    @property
-    def amenities(self):
-        """ return list of amenities that certain place has"""
-        all_objs = models.storage.all()
-        amenities_list = []
-        for k, v in all_objs.items():
-            if v.__class__.__name__ == 'Amenity' and v.id == self.id:
-                amenities_list.append(v)
-        return amenities_list
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
 
-    @amenities.setter
-    def amenties(self):
-        """ add Amenity.id to amenity_ids list"""
-        if self.__name__ is not 'Amenity':
-            return
-        amenity_ids.append(self.id)
+    else:
+        @property
+        def amenities(self):
+            """ return list of amenities that certain place has"""
+            all_objs = models.storage.all()
+            amenities_list = []
+            for k, v in all_objs.items():
+                if v.__class__.__name__ == 'Amenity' and v.id in self.amenity_ids:
+                    amenities_list.append(v)
+            return amenities_list
 
-    @property
-    def reviews(self):
-        """ gets a list of review objects from that place """
-        all_obj = models.storage.all()
-        reviews_list = []
-        for k, v in all_obj.items():
-            if v.__class__.__name__ == 'Review' and v.place_id == self.id:
-                reviews_list.append(v)
-        return reviews_list
+        @amenities.setter
+        def amenties(self):
+            """ add Amenity.id to amenity_ids list"""
+            if self.__class__.__name__ is not 'Amenity':
+                return
+            amenity_ids.append(self.id)
+
+        @property
+        def reviews(self):
+            """ gets a list of review objects from that place """
+            all_obj = models.storage.all()
+            reviews_list = []
+            for k, v in all_obj.items():
+                if v.__class__.__name__ == 'Review' and v.place_id == self.id:
+                    reviews_list.append(v)
+            return reviews_list
