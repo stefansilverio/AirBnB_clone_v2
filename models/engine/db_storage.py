@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """DBStorage class"""
 
-
 from models.base_model import Base
 from models.amenity import Amenity
 from models.city import City
@@ -20,7 +19,7 @@ class DBStorage:
     """describes DBStorage class"""
     __engine = None
     __session = None
-    __all_classes = {"Amenity", "City", "Place", "Review", "State", "User"}
+    __all_classes = {State, City}
 
     def __init__(self):
         """happens when a new instance of DBStorage is created"""
@@ -39,18 +38,18 @@ class DBStorage:
         """query on the current database session (self.__session) all objects depending of the class name (argument cls)"""
         dict_all = {}
         if cls is None:
-            all_rows = self.__session.query(Amenity, City, Place, Review, State, User).all()
+            for table in self.__all_classes:
+                type_obj = self.__session.query(table)
+                for one_obj in type_obj:
+                    cls_name =  one_obj.__class__.__name__
+                    k = cls_name + '.' + one_obj.id
+                    dict_all[k] = one_obj
+
+        else:
+            all_rows = self.__session.query(cls).all()
             for obj in all_rows:
-                cls_name =  obj.__class__.__name__
                 k = obj.__class__.__name__ + '.' + obj.id
                 dict_all[k] = obj
-        else:
-            cls_name = cls.__name__
-            if cls_name in self.__all_classes:
-                all_rows = self.__session.query(cls_name).all()
-                for obj in all_rows:
-                    k = cls_name + '.' + obj.id
-                    dict_all[k] = obj
         return dict_all
 
     def reload(self):
