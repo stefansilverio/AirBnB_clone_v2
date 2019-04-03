@@ -40,6 +40,10 @@ class FileStorage:
             return filtered_dict
 
     def delete(self, obj=None):
+        """delete obj
+        Return:
+            nothing
+        """
         if obj is None:
             return
         else:
