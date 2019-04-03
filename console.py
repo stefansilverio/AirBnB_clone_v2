@@ -50,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
                 new_attr = {}
                 for arg in range(1, len(my_list)):
                     k_v = my_list[arg].split("=")
-                    new_attr[k_v[0]]=k_v[1]  # add atts to dict
+                    new_attr[k_v[0]] = k_v[1]  # add atts to dict
                 for k, v in new_attr.items():
                     if v[0] is "\"":  # what if str !start w/ "
                         v = v[1:-1]

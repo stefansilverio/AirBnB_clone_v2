@@ -27,7 +27,9 @@ class DBStorage:
         pwd = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
         db = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, pwd, host, db), pool_pre_ping=True)
+        self.__engine = create_engine(
+            'mysql+mysqldb://{}:{}@{}/{}'.
+            format(user, pwd, host, db), pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine)
         self.__session = Session()
@@ -35,13 +37,14 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """query on the current database session (self.__session) all objects depending of the class name (argument cls)"""
+        """query on the current database session (self.__session) all
+        objects depending of the class name (argument cls)"""
         dict_all = {}
         if cls is None:
             for table in self.__all_classes:
                 type_obj = self.__session.query(table)
                 for one_obj in type_obj:
-                    cls_name =  one_obj.__class__.__name__
+                    cls_name = one_obj.__class__.__name__
                     k = cls_name + '.' + one_obj.id
                     dict_all[k] = one_obj
 
@@ -55,7 +58,8 @@ class DBStorage:
     def reload(self):
         """creates all tables in database"""
         Base.metadata.create_all(self.__engine)
-        reloaded_sesh = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        reloaded_sesh = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(reloaded_sesh)
 
     def new(self, obj):
