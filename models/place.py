@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import Base, BaseModel
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+import models
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 
 
@@ -21,6 +22,7 @@ class Place(BaseModel, Base):
         amenity_ids: list of Amenity ids
     """
     __tablename__ = 'places'
+
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -33,7 +35,30 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+                          Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False),
+    )
+
+    amenities = relationship("Place", secondary=place_amenity, viewonly=False)
     reviews = relationship("Review", backref='place', cascade="all, delete, delete-orphan")
+
+    @property
+    def amenities(self):
+        """ return list of amenities that certain place has"""
+        all_objs = models.storage.all()
+        amenities_list = []
+        for k, v in all_objs.items():
+            if v.__class__.__name__ == 'Amenity' and v.id == self.id:
+                amenities_list.append(v)
+        return amenities_list
+
+    @amenities.setter
+    def amenties(self):
+        """ add Amenity.id to amenity_ids list"""
+        if self.__name__ is not 'Amenity':
+            return
+        amenity_ids.append(self.id)
 
     @property
     def reviews(self):
