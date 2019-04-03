@@ -38,7 +38,6 @@ class DBStorage:
         """query on the current database session (self.__session) all objects depending of the class name (argument cls)"""
         dict_all = {}
         if cls is None:
-            print("cls in none")
             for table in self.__all_classes:
                 type_obj = self.__session.query(table)
                 for one_obj in type_obj:
@@ -47,7 +46,6 @@ class DBStorage:
                     dict_all[k] = one_obj
 
         else:
-            print("cls not none")
             all_rows = self.__session.query(cls).all()
             for obj in all_rows:
                 k = obj.__class__.__name__ + '.' + obj.id
