@@ -45,14 +45,14 @@ class HBNBCommand(cmd.Cmd):
             if my_list[0] not in self.all_classes:
                 raise NameError
 
-            obj = eval("{}()".format(my_list[0]))  # create obj
+            obj = eval("{}()".format(my_list[0]))
             if len(my_list) > 1:
                 new_attr = {}
                 for arg in range(1, len(my_list)):
                     k_v = my_list[arg].split("=")
-                    new_attr[k_v[0]] = k_v[1]  # add atts to dict
+                    new_attr[k_v[0]] = k_v[1]
                 for k, v in new_attr.items():
-                    if v[0] is "\"":  # what if str !start w/ "
+                    if v[0] is "\"":
                         v = v[1:-1]
                         v = v.replace('_', ' ')
                     elif "." in v:
