@@ -31,10 +31,7 @@ class FileStorage:
             return self.__objects
         else:
             filtered_dict = {}
-            cls_str = str(cls)
-            cls_list = cls_str.split(".")
-            cls_name = cls_list[len(cls_list)-1]
-            cls_name = cls_name[:-2]
+            cls_name = cls.__name__
             if cls_name in self.all_classes:
                 for k in self.__objects.keys():
                     sp = k.split(".")
