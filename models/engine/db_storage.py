@@ -19,7 +19,7 @@ class DBStorage:
     """describes DBStorage class"""
     __engine = None
     __session = None
-    __all_classes = {State, City}
+    __all_classes = {State, City, Amenity, Place, Review, User}
 
     def __init__(self):
         """happens when a new instance of DBStorage is created"""
