@@ -2,14 +2,23 @@
 
 This is the console /command interpreter for the Holberton Airbnb clone project. The console can be used to store objects in and retrieve objects from a JSON.
 
-## Storage System:
+## Storage method:
 File storage: uses a custom class `FileStorage` which saves all objects into a file `file.json`
 Database storage: uses a custom class `DBStorage` which saves all objects into a database
 
-## How to choose which storage system to use:
+## How to choose which storage method to use:
 To use file storage, simply execute the console file like so: `./console.py`.
+
 To use database storage, use the following environment variables:
+
+* `HBNB_ENV`: running environment. It can be “dev” or “test” for the moment (“production” soon!)
+* `HBNB_MYSQL_USER`: the username of your MySQL
+* `HBNB_MYSQL_PWD`: the password of your MySQL
+* `HBNB_MYSQL_HOST`: the hostname of your MySQL
+* `HBNB_MYSQL_DB`: the database name of your MySQL
+* `HBNB_TYPE_STORAGE`: the type of storage used. It can be “file” (using FileStorage) or db (using DBStorage)
 ```
+
 ```
 
 ## Supported classes:
