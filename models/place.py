@@ -36,15 +36,18 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-    place_amenity = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                          Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False),
-    )
+    place_amenity = Table('place_amenity', Base.metadata, Column(
+                'place_id', String(60), ForeignKey(
+                    'places.id'), primary_key=True, nullable=False), Column(
+                    'amenity_id', String(60), ForeignKey(
+                        'amenities.id'), primary_key=True, nullable=False))
 
-    reviews = relationship("Review", backref='place', cascade="all, delete, delete-orphan")
+    reviews = relationship(
+            "Review", backref='place', cascade="all, delete, delete-orphan")
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
+        amenities = relationship(
+                "Amenity", secondary='place_amenity', viewonly=False)
 
     else:
         @property
@@ -53,7 +56,8 @@ class Place(BaseModel, Base):
             all_objs = models.storage.all()
             amenities_list = []
             for k, v in all_objs.items():
-                if v.__class__.__name__ == 'Amenity' and v.id in self.amenity_ids:
+                if v.__class__.__name__ == 'Amenity' and \
+                                         v.id in self.amenity_ids:
                     amenities_list.append(v)
             return amenities_list
 
