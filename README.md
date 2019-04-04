@@ -4,7 +4,7 @@ This is the console /command interpreter for the Holberton Airbnb clone project.
 
 ## Storage System:
 File storage: uses a custom class `FileStorage` which saves all objects into a file `file.json`
-Database storage: uses a custom class `DBStorage`
+Database storage: uses a custom class `DBStorage` which saves all objects into a database
 
 ## Supported classes:
 * User
