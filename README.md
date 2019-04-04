@@ -17,8 +17,11 @@ To use database storage, use the following environment variables:
 * `HBNB_MYSQL_HOST`: the hostname of your MySQL
 * `HBNB_MYSQL_DB`: the database name of your MySQL
 * `HBNB_TYPE_STORAGE`: the type of storage used. It can be “file” (using FileStorage) or db (using DBStorage)
-```
 
+Example of how to use the console with database storage:
+
+```
+$ HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db ./console.py
 ```
 
 ## Supported classes:
