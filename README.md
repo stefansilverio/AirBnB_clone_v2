@@ -6,6 +6,9 @@ This is the console /command interpreter for the Holberton Airbnb clone project.
 File storage: uses a custom class `FileStorage` which saves all objects into a file `file.json`
 Database storage: uses a custom class `DBStorage` which saves all objects into a database
 
+## How to choose which storage system to use:
+To use file storage, simply execute the console file like so: `./console.py`.
+
 ## Supported classes:
 * User
 * State
