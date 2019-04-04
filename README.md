@@ -7,7 +7,6 @@ File storage: uses a custom class `FileStorage` which saves all objects into a f
 Database storage: uses a custom class `DBStorage`
 
 ## Supported classes:
-* BaseModel
 * User
 * State
 * City
@@ -28,7 +27,7 @@ To start, navigate to the project folder and enter `./console.py` in the shell.
 #### Create
 `create <class name>`
 Ex:
-`create BaseModel`
+`create User`
 
 #### Show
 `show <class name> <object id>`
