@@ -8,6 +8,9 @@ Database storage: uses a custom class `DBStorage` which saves all objects into a
 
 ## How to choose which storage system to use:
 To use file storage, simply execute the console file like so: `./console.py`.
+To use database storage, use the following environment variables:
+```
+```
 
 ## Supported classes:
 * User
