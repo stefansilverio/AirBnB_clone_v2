@@ -102,9 +102,9 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show BaseModel")
             self.assertEqual(
-                "** instance id missing **\n", f.getvalue())
+                "** class doesn't exist **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("show BaseModel abcd-123")
+            self.consol.onecmd("show User abcd-123")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
 
@@ -194,7 +194,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "** class doesn't exist **\n", f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.consol.onecmd("BaseModel.show(abcd-123)")
+            self.consol.onecmd("City.show(abcd-123)")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
 
