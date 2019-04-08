@@ -10,7 +10,7 @@ def do_pack():
     now = datetime.now()
     local("mkdir -p versions")
     name = "web_static_" + str(now.year) + str(now.month) + str(now.day)\
-           + str(now.hour) + str(now.minute) +  str(now.second) + ".tgz"
+           + str(now.hour) + str(now.minute) + str(now.second) + ".tgz"
     local("tar czfv {} web_static".format(name))
     local("mv {} versions".format(name))
     exists = os.path.isfile('versions/{}'.format(name))
