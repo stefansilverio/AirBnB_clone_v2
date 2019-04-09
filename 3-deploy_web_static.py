@@ -35,11 +35,11 @@ def do_deploy(archive_path):
         return False
     try:
         put(archive_path, "/tmp/")
-        run("rm -rf /data/web_static/releases/" + no_extension)
-        run("mkdir -p /data/web_static/releases/" + no_extension)
-        run("tar xzf /tmp/" + filename + " -C " +
+        sudo("rm -rf /data/web_static/releases/" + no_extension)
+        sudo("mkdir -p /data/web_static/releases/" + no_extension)
+        sudo("tar xzf /tmp/" + filename + " -C " +
             "/data/web_static/releases/" + no_extension)
-        run("mv /data/web_static/releases/" +
+        sudo("mv -f /data/web_static/releases/" +
             no_extension + "/web_static/* /data/web_static/releases/" +
             no_extension)
         sudo("rm -f /tmp/" + filename)
