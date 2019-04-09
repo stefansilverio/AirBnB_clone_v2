@@ -21,19 +21,17 @@ def do_deploy(archive_path):
         return False
     try:
         put(archive_path, "/tmp/")
-        sudo("rm -rf /data/web_static/releases/" + no_extension)
-        sudo("mkdir -p /data/web_static/releases/" + no_extension)
-        sudo("tar xzf /tmp/" + filename + " -C " +
-             "/data/web_static/releases/" + no_extension)
-        sudo("mv -f /data/web_static/releases/" +
-             no_extension + "/web_static/* /data/web_static/releases/" +
-             no_extension)
-        sudo("rm -f /tmp/" + filename)
-        sudo("rm -rf /data/web_static/releases/" +
-             no_extension + "web_static/")
-        sudo("rm -rf /data/web_static/current")
-        sudo("ln -s /data/web_static/releases/" + no_extension +
-             " /data/web_static/current")
+        run("rm -rf /data/web_static/releases/")
+        run("mkdir -p /data/web_static/releases/" + no_extension)
+        run("tar xzf /tmp/" + filename + " -C " +
+            "/data/web_static/releases/" + no_extension)
+        run("rm -f /tmp/" + filename)
+        run("unlink /data/web_static/current")
+        run("ln -s /data/web_static/releases/" + no_extension +
+            " /data/web_static/current")
+        run("mv -f /data/web_static/releases/" +
+            no_extension + "/web_static/* /data/web_static/releases/" +
+            no_extension)
         return True
     except Exception:
         return False
