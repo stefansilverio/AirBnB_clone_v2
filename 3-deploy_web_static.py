@@ -26,6 +26,7 @@ def do_pack():
 
 
 def do_deploy(archive_path):
+    """deploy on server"""
     a_list = archive_path.split("/")
     filename = a_list[-1]
     extension_list = filename.split(".")
@@ -38,10 +39,10 @@ def do_deploy(archive_path):
         sudo("rm -rf /data/web_static/releases/" + no_extension)
         sudo("mkdir -p /data/web_static/releases/" + no_extension)
         sudo("tar xzf /tmp/" + filename + " -C " +
-            "/data/web_static/releases/" + no_extension)
+             "/data/web_static/releases/" + no_extension)
         sudo("mv -f /data/web_static/releases/" +
-            no_extension + "/web_static/* /data/web_static/releases/" +
-            no_extension)
+             no_extension + "/web_static/* /data/web_static/releases/" +
+             no_extension)
         sudo("rm -f /tmp/" + filename)
         sudo("rm -rf /data/web_static/releases/" +
              no_extension + "web_static/")
@@ -54,6 +55,7 @@ def do_deploy(archive_path):
 
 
 def deploy():
+"""deploy archives on web-servers"""
     path = do_pack()
     if path is None:
         return False
