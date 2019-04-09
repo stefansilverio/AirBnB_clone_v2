@@ -11,6 +11,7 @@ env.hosts = ['35.237.253.193', '35.231.141.38']
 
 
 def do_deploy(archive_path):
+    """deploy tarball on server"""
     a_list = archive_path.split("/")
     filename = a_list[-1]
     extension_list = filename.split(".")

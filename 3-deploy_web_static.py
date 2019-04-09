@@ -55,7 +55,7 @@ def do_deploy(archive_path):
 
 
 def deploy():
-"""deploy archives on web-servers"""
+    """deploy archives on web-servers"""
     path = do_pack()
     if path is None:
         return False
