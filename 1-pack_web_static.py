@@ -15,5 +15,5 @@ def do_pack():
     local("mv {} versions".format(name))
     exists = os.path.isfile('versions/{}'.format(name))
     if (exists):
-        return(os.path.abspath("{}".format(name)))
+        return(os.path.abspath("versions/{}".format(name)))
     return None
