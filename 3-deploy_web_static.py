@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """distribute archive to web-servers"""
 from datetime import datetime
-from fabric.api import put
-from fabric.api import sudo
-from fabric.api import hosts, env
-from fabric.api import local
+from fabric.api import *
 import os
 
 
 env.hosts = ['35.237.253.193', '35.231.141.38']
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/holberton'
+env.use_ssh_config = True
 
 
 def do_pack():
@@ -35,7 +35,7 @@ def do_deploy(archive_path):
     if not exists:
         return False
     try:
-        put(archive_path, "/tmp/")
+        result = put(archive_path, "/tmp/")
         sudo("rm -rf /data/web_static/releases/" + no_extension)
         sudo("mkdir -p /data/web_static/releases/" + no_extension)
         sudo("tar xzf /tmp/" + filename + " -C " +
@@ -50,7 +50,7 @@ def do_deploy(archive_path):
         sudo("ln -s /data/web_static/releases/" + no_extension +
              " /data/web_static/current")
         return True
-    except Exception:
+    except:
         return False
 
 
