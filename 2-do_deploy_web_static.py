@@ -30,5 +30,4 @@ web_static/")
 /data/web_static/current")
         return True
     except Exception as e:
-        print("EXCEPTION: {}".format(e))
         return False
