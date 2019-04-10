@@ -14,6 +14,6 @@ def do_clean(number=0):
     if number is 0 or 1:
         number = 2
     with lcd("versions/"):
-        local("ls -1t | tail -n+{} | xargs rm -f".format(number+1))
+        local("ls -1t | tail -n+{} | xargs rm -rf".format(number+1))
     with cd("/data/web_static/releases"):
         run("ls -1t | tail -n+{} | xargs rm -rf".format(number+1))
