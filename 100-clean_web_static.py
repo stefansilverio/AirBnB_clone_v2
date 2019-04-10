@@ -11,9 +11,9 @@ env.hosts = ['35.237.253.193', '35.231.141.38']
 
 def do_clean(number=0):
     """clean old archives"""
-    if number is 0:
-        number = 1
+    if number is 0 or 1:
+        number = 2
     with lcd("versions/"):
-        local("ls -Ct | tail -n+{} | xargs rm -f".format(number))
+        local("ls -1t | tail -n+{} | xargs rm -f".format(number+1))
     with cd("/data/web_static/releases"):
-        run("ls -Ct | tail -n+{} | xargs rm -f".format(number))
+        run("ls -1t | tail -n+{} | xargs rm -f".format(number+1))
