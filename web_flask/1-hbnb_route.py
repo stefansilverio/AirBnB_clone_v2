@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""start a flask web-app"""
+"""start Flask web-application"""
 from flask import Flask
 app = Flask(__name__)
 
@@ -8,6 +8,12 @@ app = Flask(__name__)
 def hello_world():
     """return text"""
     return "Hello HBNB!"
+
+
+@app.route('/hbnb', strict_slashes=False)
+def hello():
+    """return text"""
+    return "HBNB"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
