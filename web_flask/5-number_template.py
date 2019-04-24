@@ -36,6 +36,7 @@ def np(n):
     """if only an integer"""
     return ("{} is a number".format(n))
 
+
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def pn(n):
     """display page only if n is int"""
