@@ -31,10 +31,9 @@ def p(text):
     return ("Python {}".format(text))
 
 
-@app.route('/number/<n>', strict_slashes=False)
+@app.route('/number/<int:n>', strict_slashes=False)
 def n(n):
     """if only an integer"""
-    text = text.replace("_", " ")
     if type(n) == int:
         return ("{} is a number".format(n))
 
