@@ -25,19 +25,20 @@ class FileStorage:
     def all(self, cls=None):
         """returns a dictionary
         Return:
-            returns a dictionary of __object
-        """
+            returns a dictionary of __object"""
         if cls is None:
             return self.__objects
-        else:
-            filtered_dict = {}
-            cls_name = cls.__name__
-            if cls_name in self.all_classes:
-                for k in self.__objects.keys():
-                    sp = k.split(".")
-                    if sp[0] == cls_name:
-                        filtered_dict[k] = self.__objects[k]
-            return filtered_dict
+        if type(cls) is str:
+            cls = eval(cls)
+
+        filtered_dict = {}
+        cls_name = cls.__name__
+        if cls_name in self.all_classes:
+            for k in self.__objects.keys():
+                sp = k.split(".")
+                if sp[0] == cls_name:
+                    filtered_dict[k] = self.__objects[k]
+        return filtered_dict
 
     def delete(self, obj=None):
         """delete obj
