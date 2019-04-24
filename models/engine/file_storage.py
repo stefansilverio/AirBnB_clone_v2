@@ -81,5 +81,5 @@ class FileStorage:
             pass
 
     def close(self):
-        """calls reload() method for deserializing objects"""
+        """calls reload() deserializes objects"""
         self.reload()
