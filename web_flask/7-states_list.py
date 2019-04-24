@@ -14,10 +14,9 @@ def s():
 
 
 @app.teardown_appcontext
-def new_session(all_states):
+def new_session(error):
     """end current session"""
     storage.close()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
