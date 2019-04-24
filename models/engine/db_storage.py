@@ -1,79 +1,85 @@
 #!/usr/bin/python3
-"""DBStorage class"""
-
-from models.base_model import Base
-from models.amenity import Amenity
+"""This is the file storage class for AirBnB"""
+import json
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
 from models.city import City
+from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models.state import State
-from models.user import User
-import os
-from sqlalchemy import (create_engine)
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import Session
-from sqlalchemy.orm import sessionmaker
 
 
-class DBStorage:
-    """describes DBStorage class"""
-    __engine = None
-    __session = None
-    __all_classes = {State, City, Amenity, Place, Review, User}
-
-    def __init__(self):
-        """happens when a new instance of DBStorage is created"""
-        user = os.getenv('HBNB_MYSQL_USER')
-        pwd = os.getenv('HBNB_MYSQL_PWD')
-        host = os.getenv('HBNB_MYSQL_HOST')
-        db = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.
-            format(user, pwd, host, db), pool_pre_ping=True)
-        Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
-        if os.getenv('HBNB_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+class FileStorage:
+    """This class serializes instances to a JSON file and
+    deserializes JSON file to instances
+    Attributes:
+        __file_path: path to the JSON file
+        __objects: objects will be stored
+    """
+    all_classes = {"BaseModel", "User", "State", "City",
+                   "Amenity", "Place", "Review"}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self, cls=None):
-        """query on the current database session (self.__session) all
-        objects depending of the class name (argument cls)"""
-        dict_all = {}
+        """returns a dictionary
+        Return:
+            returns a dictionary of __object
+        """
         if cls is None:
-            for table in self.__all_classes:
-                type_obj = self.__session.query(table)
-                for one_obj in type_obj:
-                    cls_name = one_obj.__class__.__name__
-                    k = cls_name + '.' + one_obj.id
-                    dict_all[k] = one_obj
-
+            return self.__objects
         else:
-            all_rows = self.__session.query(cls).all()
-            for obj in all_rows:
-                k = obj.__class__.__name__ + '.' + obj.id
-                dict_all[k] = obj
-        return dict_all
-
-    def reload(self):
-        """creates all tables in database"""
-        Base.metadata.create_all(self.__engine)
-        reloaded_sesh = sessionmaker(
-            bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(reloaded_sesh)
-
-    def new(self, obj):
-        """adds an object to the current datatabase session
-        """
-        self.__session.add(obj)
-
-    def save(self):
-        """commits all changes of the current database session
-        """
-        self.__session.commit()
+            filtered_dict = {}
+            cls_name = cls.__name__
+            if cls_name in self.all_classes:
+                for k in self.__objects.keys():
+                    sp = k.split(".")
+                    if sp[0] == cls_name:
+                        filtered_dict[k] = self.__objects[k]
+            return filtered_dict
 
     def delete(self, obj=None):
-        """deletes obj from the current database session
+        """delete obj
+        Return:
+            nothing
         """
-        if obj is not None:
-            self.__session.delete(obj)
+        if obj is None:
+            return
+        else:
+            obj_key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if obj_key in self.__objects.keys():
+                del self.__objects[obj_key]
+
+    def new(self, obj):
+        """sets __object to given obj
+        Args:
+            obj: given object
+        """
+        if obj:
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            self.__objects[key] = obj
+
+    def save(self):
+        """serialize the file path to JSON file path
+        """
+        my_dict = {}
+        for key, value in self.__objects.items():
+            my_dict[key] = value.to_dict()
+        with open(self.__file_path, 'w', encoding="UTF-8") as f:
+            json.dump(my_dict, f)
+
+    def reload(self):
+        """serialize the file path to JSON file path
+        """
+        try:
+            with open(self.__file_path, 'r', encoding="UTF-8") as f:
+                for key, value in (json.load(f)).items():
+                    value = eval(value["__class__"])(**value)
+                    self.__objects[key] = value
+        except FileNotFoundError:
+            pass
+
+    def close(self):
+        """calls reload() method for deserializing objects"""
+        self.reload()
