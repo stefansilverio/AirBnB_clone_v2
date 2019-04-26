@@ -29,9 +29,6 @@ class DBStorage:
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.
             format(user, pwd, host, db), pool_pre_ping=True)
-        Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -60,7 +57,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         reloaded_sesh = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(reloaded_sesh)
+        Session = scoped_session(reloaded_sesh)
+        self.__session = Session()
 
     def new(self, obj):
         """adds an object to the current datatabase session
@@ -80,4 +78,4 @@ class DBStorage:
 
     def close(self):
         """close self.__session Session object"""
-        self.__session.remove()
+        self.__session.close()
