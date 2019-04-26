@@ -5,7 +5,6 @@ from models.state import State
 from flask import Flask, render_template
 
 app = Flask(__name__)
-all_states = storage.all(State)
 
 
 @app.teardown_appcontext
@@ -17,6 +16,7 @@ def new_session(error):
 @app.route('/states_list', strict_slashes=False)
 def s():
     """show all states"""
+    all_states = storage.all(State)
     return render_template('7-states_list.html', state=all_states.values())
 
 
