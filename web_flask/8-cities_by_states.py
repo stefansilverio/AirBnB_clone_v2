@@ -6,7 +6,6 @@ from flask import Flask, render_template
 
 
 app = Flask(__name__)
-all_states = storage.all(State)
 
 
 @app.teardown_appcontext
@@ -18,6 +17,7 @@ def new_session(error):
 @app.route('/cities_by_states', strict_slashes=False)
 def c():
     """send obj to jinja template"""
+    all_states = storage.all(State)
     return render_template('8-cities_by_states.html',
                            states=all_states.values())
 
