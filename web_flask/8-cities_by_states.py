@@ -19,5 +19,4 @@ def c():
     return render_template('8-cities_by_states.html', states=all_states.values())
 
 if __name__ == "__main__":
-    storage.close()
     app.run(host="0.0.0.0", port=5000)
