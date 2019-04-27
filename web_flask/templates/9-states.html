@@ -20,10 +20,8 @@
       <H1>State: {{ all_states.name }}</H1>
       <H3>Cities:</H3>
       <UL>
-	{% for state in all_states.values() %}
-	{% for c_s in state.cities|sort(attribute='name') %}
+	{% for c_s in all_states.cities|sort(attribute='name') %}
 	<LI>{{ c_s.id }}: <B>{{ c_s.name }}</B></LI>
-	{% endfor %}
 	{% endfor %}
       </UL>
       {% endif %}

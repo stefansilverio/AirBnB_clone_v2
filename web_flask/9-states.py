@@ -26,7 +26,7 @@ def c(id):
     for city in all_states.values():
         if city.id == id:
             return render_template('9-states.html',
-                                   all_states=storage.all(), s_id=id)
+                                   all_states=city, s_id=id)
 
     return render_template('9-states.html', s_id=id)
     # id exists but state not found - print not found
