@@ -18,16 +18,18 @@ def new_session(error):
 @app.route('/states/<id>', strict_slashes=False)
 def c(id):
     """send obj to jinja template"""
-    all_states = storage.all(State) # print all states if id not defined
+    all_states = storage.all(State)  # print all states if id not defined
     if id is None:
-        return render_template('9-states.html', all_states=storage.all(State), s_id=id)
+        return render_template('9-states.html', all_states=storage.all(State),
+                               s_id=id)
 
     for city in all_states.values():
         if city.id == id:
             return render_template('9-states.html',
-                           all_states=storage.all(), s_id=id)
+                                   all_states=storage.all(), s_id=id)
 
-    return render_template('9-states.html', s_id=id) # id exists but state not found - print not found
+    return render_template('9-states.html', s_id=id)  # id exists but state not
+    found - print not found
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
