@@ -28,8 +28,8 @@ def c(id):
             return render_template('9-states.html',
                                    all_states=storage.all(), s_id=id)
 
-    return render_template('9-states.html', s_id=id)  # id exists but state not
-                                                      # found - print not found
+    return render_template('9-states.html', s_id=id)
+    # id exists but state not found - print not found
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
